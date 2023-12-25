@@ -23,7 +23,7 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
 }
 
-
+token_ = ''
 def import_from_excel():
     df = pd.read_excel('Data BOOM LA City Addresses v1.xlsx')
     for i in df.values:
@@ -56,7 +56,7 @@ def main_fun(website_base, property_add, zipcode):
         site_li = {'link': site_base}
         save_link(site_li)
         print(site_li)
-        scrape_do = f"http://api.scrape.do?token=522399431c7f4facb198bcb967ecd4be917f3d5226c&url={site_base}"
+        scrape_do = f"http://api.scrape.do?token={token_}&url={site_base}"
         website = scrape_do
         response = requests.get(website, headers=headers)
         content = html.fromstring(response.text)
@@ -74,7 +74,7 @@ def main_fun(website_base, property_add, zipcode):
 
 
 def get_details(link, property_add, zipcode):
-    scrape_do = f"http://api.scrape.do?token=522399431c7f4facb198bcb967ecd4be917f3d5226c&url={link}"
+    scrape_do = f"http://api.scrape.do?token={token_}&url={link}"
     response = requests.get(scrape_do, headers=headers)
     content = html.fromstring(response.text)
     try:
@@ -106,7 +106,7 @@ def get_details(link, property_add, zipcode):
 
 def convert_to_csv(data):
     df = pd.DataFrame([data])
-    filename = 'sample.csv'
+    filename = 'UsphoneBook_Details.csv'
     if os.path.exists(filename):
         df.to_csv(filename, mode="a", index=False, header=False, encoding='utf-8')
     else:
